@@ -5,6 +5,10 @@ export enum ApiEndpoint {
 
 export type HttpMethod = 'GET';
 
+export const HTTP_METHOD = {
+    GET: 'GET',
+} as const;
+
 export interface ArticleSource {
     id: string | null;
     name: string;

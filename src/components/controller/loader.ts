@@ -1,4 +1,4 @@
-import { HttpMethod, RequestConfig, RequestOptions } from '../../types';
+import { HTTP_METHOD, HttpMethod, RequestConfig, RequestOptions } from '../../types';
 
 class Loader {
     private readonly baseLink: string;
@@ -15,13 +15,14 @@ class Loader {
             console.error('No callback for GET response');
         }
     ): void {
-        this.load<T>('GET', endpoint, callback, options);
+        this.load<T>(HTTP_METHOD.GET, endpoint, callback, options);
     }
 
     errorHandler(res: Response): Response {
         if (!res.ok) {
-            if (res.status === 401 || res.status === 404)
+            if (res.status === 401 || res.status === 404) {
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
+            }
             throw Error(res.statusText);
         }
 
