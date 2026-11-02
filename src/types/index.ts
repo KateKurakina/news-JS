@@ -1,3 +1,10 @@
+export enum ApiEndpoint {
+    Sources = 'sources',
+    Everything = 'everything',
+}
+
+export type HttpMethod = 'GET';
+
 export interface ArticleSource {
     id: string | null;
     name: string;
@@ -24,6 +31,10 @@ export interface NewsSource {
     country: string;
 }
 
+export type NewsSourcePreview = Pick<NewsSource, 'id' | 'name'>;
+
+export type NewsSourceUpdate = Partial<NewsSource>;
+
 export interface ArticlesResponse {
     status: string;
     totalResults: number;
@@ -40,6 +51,6 @@ export interface RequestOptions {
 }
 
 export interface RequestConfig {
-    endpoint: string;
+    endpoint: ApiEndpoint;
     options?: RequestOptions;
 }

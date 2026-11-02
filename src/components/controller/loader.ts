@@ -1,8 +1,8 @@
-import { RequestConfig, RequestOptions } from '../../types';
+import { HttpMethod, RequestConfig, RequestOptions } from '../../types';
 
 class Loader {
-    private baseLink: string;
-    private options: RequestOptions;
+    private readonly baseLink: string;
+    private readonly options: Readonly<RequestOptions>;
 
     constructor(baseLink: string, options: RequestOptions) {
         this.baseLink = baseLink;
@@ -39,7 +39,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load<T>(method: string, endpoint: string, callback: (data: T) => void, options: RequestOptions = {}): void {
+    load<T>(method: HttpMethod, endpoint: string, callback: (data: T) => void, options: RequestOptions = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
