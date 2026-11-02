@@ -13,9 +13,12 @@ class Loader {
         { endpoint, options = {} }: RequestConfig,
         callback: (data: T) => void = () => {
             console.error('No callback for GET response');
+        },
+        onError: (error: Error) => void = (error) => {
+            console.error(error);
         }
     ): void {
-        this.load<T>(HTTP_METHOD.GET, endpoint, callback, options);
+        this.load<T>(HTTP_METHOD.GET, endpoint, callback, options, onError);
     }
 
     errorHandler(res: Response): Response {
@@ -40,12 +43,20 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load<T>(method: HttpMethod, endpoint: string, callback: (data: T) => void, options: RequestOptions = {}): void {
+    load<T>(
+        method: HttpMethod,
+        endpoint: string,
+        callback: (data: T) => void,
+        options: RequestOptions = {},
+        onError: (error: Error) => void = (error) => {
+            console.error(error);
+        }
+    ): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
-            .then((res) => res.json())
+            .then((res) => res.json() as Promise<T>)
             .then((data) => callback(data))
-            .catch((err) => console.error(err));
+            .catch((err: Error) => onError(err));
     }
 }
 

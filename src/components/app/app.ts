@@ -18,10 +18,23 @@ class App {
         }
 
         sourcesElement.addEventListener('click', (e) => {
-            this.controller.getNews(e, (data) => this.view.drawNews(data));
+            this.controller.getNews(
+                e,
+                (data) => {
+                    this.view.clearError();
+                    this.view.drawNews(data);
+                },
+                (error) => this.view.showError(error)
+            );
         });
 
-        this.controller.getSources((data) => this.view.drawSources(data));
+        this.controller.getSources(
+            (data) => {
+                this.view.clearError();
+                this.view.drawSources(data);
+            },
+            (error) => this.view.showError(error)
+        );
     }
 }
 
